@@ -4,6 +4,8 @@ import os
 import sys
 import getpass
 import datetime
+import chardet
+import codecs
 
 
 def main(argv):
@@ -55,7 +57,8 @@ def print_stats(files, language, known_words):
     for f in files:
         logfile.write("Stats for " + os.path.split(f)[1] + "\n")
         print("Stats for " + os.path.split(f)[1])
-        text = open(f, "r")
+        file_encoding = chardet.detect(open(f, "rb").read())["encoding"]
+        text = codecs.open(f, "r", file_encoding)
         stats = get_textstats(text, known_words)
         logfile.write("\t Total Words: " + str(stats[0]) + "\n")
         print("\t Total Words: " + str(stats[0]))
